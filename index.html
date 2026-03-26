@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WWE CAW Generator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1>WWE CAW Generator</h1>
+      <p>Free prototype</p>
+    </header>
+
+    <main>
+      <section class="search-card">
+        <input
+          id="wrestlerInput"
+          type="text"
+          placeholder="Enter a WWE wrestler name"
+        />
+        <button id="generateBtn">Generate</button>
+      </section>
+
+      <section id="status" class="status"></section>
+
+      <section id="results" class="results hidden">
+        <div class="card">
+          <h2>Core Attributes</h2>
+          <div id="coreAttributes" class="grid"></div>
+        </div>
+
+        <div class="card">
+          <h2>AI Attributes</h2>
+          <div id="aiAttributes" class="grid"></div>
+        </div>
+
+        <div class="card">
+          <h2>Signatures</h2>
+          <ul id="signatures"></ul>
+        </div>
+
+        <div class="card">
+          <h2>Finishers</h2>
+          <ul id="finishers"></ul>
+        </div>
+
+        <div class="card">
+          <h2>Taunts</h2>
+          <ul id="taunts"></ul>
+        </div>
+
+        <div class="card">
+          <h2>Skill Points</h2>
+          <div id="skillPoints" class="grid"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
