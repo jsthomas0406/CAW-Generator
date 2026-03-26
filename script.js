@@ -70,6 +70,7 @@ function extractTraits(text) {
 
 function renderGrid(container, obj) {
   if (!container) return;
+
   container.innerHTML = "";
 
   Object.entries(obj).forEach(([key, value]) => {
@@ -82,6 +83,7 @@ function renderGrid(container, obj) {
 
 function renderList(container, items) {
   if (!container) return;
+
   container.innerHTML = "";
 
   items.forEach((item) => {
