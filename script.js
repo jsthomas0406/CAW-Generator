@@ -1,6 +1,5 @@
-const resultWrestlerName = document.getElementById("resultWrestlerName");
-const resultSubtitle = document.getElementById("resultSubtitle");
-const wrestlerSelect = document.getElementById("wrestlerSelect");
+console.log("script loaded");
+
 const wrestlerProfiles = {
   "arianna grace": {
     style: "showboat",
@@ -407,6 +406,15 @@ const wrestlerInput = document.getElementById("wrestlerInput");
 const generateBtn = document.getElementById("generateBtn");
 const statusEl = document.getElementById("status");
 const resultsEl = document.getElementById("results");
+const coreAttributesEl = document.getElementById("coreAttributes");
+const aiAttributesEl = document.getElementById("aiAttributes");
+const signaturesEl = document.getElementById("signatures");
+const finishersEl = document.getElementById("finishers");
+const tauntsEl = document.getElementById("taunts");
+const skillPointsEl = document.getElementById("skillPoints");
+const resultWrestlerName = document.getElementById("resultWrestlerName");
+const resultSubtitle = document.getElementById("resultSubtitle");
+const wrestlerSelect = document.getElementById("wrestlerSelect");
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(Math.round(value), max));
@@ -415,12 +423,12 @@ function clamp(value, min, max) {
 function formatLabel(text) {
   return text
     .replace(/_/g, " ")
-    .replace(/\b\w/g, (c) => c.toUpperCase());
+    .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
 function seedFromName(name) {
   let seed = 0;
-  for (let i = 0; i < name.length; i++) {
+  for (let i = 0; i < name.length; i += 1) {
     seed = (seed * 31 + name.charCodeAt(i)) % 2147483647;
   }
   return seed || 12345;
@@ -436,8 +444,8 @@ function stat(base, max, seed, slot, spread = 4, min = 0) {
   return clamp(base + seededOffset(seed, slot, spread), min, max);
 }
 
-function renderGrid(targetId, obj) {
-  const container = document.getElementById(targetId);
+function renderGrid(container, obj) {
+  if (!container) return;
   container.innerHTML = "";
 
   Object.entries(obj).forEach(([key, value]) => {
@@ -448,9 +456,10 @@ function renderGrid(targetId, obj) {
   });
 }
 
-function renderList(targetId, items) {
-  const container = document.getElementById(targetId);
+function renderList(container, items) {
+  if (!container) return;
   container.innerHTML = "";
+
   items.forEach((item) => {
     const li = document.createElement("li");
     li.textContent = item;
@@ -461,99 +470,365 @@ function renderList(targetId, items) {
 function styleMovePools(style) {
   const pools = {
     high_flyer: {
-      signatures: ["Springboard Cutter", "Missile Dropkick", "Running Kick Combo", "450 Splash Setup"],
-      finishers: ["630 Senton", "Spiral Tap", "Springboard Cutter", "Top Rope Splash"],
-      taunts: ["Crowd hype taunt", "Fast pace challenge taunt", "Wake-up hands-down taunt"]
+      signatures: [
+        "Springboard Cutter",
+        "Missile Dropkick",
+        "Running Kick Combo",
+        "450 Splash Setup"
+      ],
+      finishers: [
+        "630 Senton",
+        "Spiral Tap",
+        "Springboard Cutter",
+        "Top Rope Splash"
+      ],
+      taunts: [
+        "Crowd hype taunt",
+        "Fast pace challenge taunt",
+        "Wake-up hands-down taunt"
+      ]
     },
     flashy_aerial: {
-      signatures: ["Springboard Clothesline", "Tilt-a-Whirl DDT", "Running Enzuigiri", "Crossbody Counter"],
-      finishers: ["450 Splash", "Corkscrew Moonsault", "Springboard Stunner", "Top Rope Splash"],
-      taunts: ["Showboat crowd taunt", "Arms-wide spotlight taunt", "Wake-up point taunt"]
+      signatures: [
+        "Springboard Clothesline",
+        "Tilt-a-Whirl DDT",
+        "Running Enzuigiri",
+        "Crossbody Counter"
+      ],
+      finishers: [
+        "450 Splash",
+        "Corkscrew Moonsault",
+        "Springboard Stunner",
+        "Top Rope Splash"
+      ],
+      taunts: [
+        "Showboat crowd taunt",
+        "Arms-wide spotlight taunt",
+        "Wake-up point taunt"
+      ]
     },
     powerhouse: {
-      signatures: ["Spinebuster", "Body Block", "Sidewalk Slam", "Clubbing Strike Combo"],
-      finishers: ["Powerbomb", "Chokeslam", "High-Impact Slam", "Sit-Out Powerbomb"],
-      taunts: ["Power pose", "Chest-out intimidation taunt", "Wake-up menace taunt"]
+      signatures: [
+        "Spinebuster",
+        "Body Block",
+        "Sidewalk Slam",
+        "Clubbing Strike Combo"
+      ],
+      finishers: [
+        "Powerbomb",
+        "Chokeslam",
+        "High-Impact Slam",
+        "Sit-Out Powerbomb"
+      ],
+      taunts: [
+        "Power pose",
+        "Chest-out intimidation taunt",
+        "Wake-up menace taunt"
+      ]
     },
     big_man: {
-      signatures: ["Corner Splash", "Bossman Slam", "Lariat", "Body Avalanche"],
-      finishers: ["Powerbomb", "Chokeslam", "Jackknife Powerbomb", "Running Slam"],
-      taunts: ["Towering stare taunt", "Slow menace taunt", "Wake-up threat taunt"]
+      signatures: [
+        "Corner Splash",
+        "Bossman Slam",
+        "Lariat",
+        "Body Avalanche"
+      ],
+      finishers: [
+        "Powerbomb",
+        "Chokeslam",
+        "Jackknife Powerbomb",
+        "Running Slam"
+      ],
+      taunts: [
+        "Towering stare taunt",
+        "Slow menace taunt",
+        "Wake-up threat taunt"
+      ]
     },
     explosive_power: {
-      signatures: ["Pop-Up Slam", "Running Shoulder Tackle", "Spinebuster", "Release Suplex"],
-      finishers: ["Powerbomb", "Military Press Slam", "High-Impact Slam", "Sit-Out Slam"],
-      taunts: ["Explosive power taunt", "Roar taunt", "Wake-up stalk taunt"]
+      signatures: [
+        "Pop-Up Slam",
+        "Running Shoulder Tackle",
+        "Spinebuster",
+        "Release Suplex"
+      ],
+      finishers: [
+        "Powerbomb",
+        "Military Press Slam",
+        "High-Impact Slam",
+        "Sit-Out Slam"
+      ],
+      taunts: [
+        "Explosive power taunt",
+        "Roar taunt",
+        "Wake-up stalk taunt"
+      ]
     },
     intense_power: {
-      signatures: ["Lariat", "Spinebuster", "Exploder Suplex", "Corner Splash"],
-      finishers: ["Powerbomb", "Uranage", "Running Slam", "Sit-Out Powerbomb"],
-      taunts: ["Intense glare taunt", "Fired-up stomp taunt", "Wake-up rage taunt"]
+      signatures: [
+        "Lariat",
+        "Spinebuster",
+        "Exploder Suplex",
+        "Corner Splash"
+      ],
+      finishers: [
+        "Powerbomb",
+        "Uranage",
+        "Running Slam",
+        "Sit-Out Powerbomb"
+      ],
+      taunts: [
+        "Intense glare taunt",
+        "Fired-up stomp taunt",
+        "Wake-up rage taunt"
+      ]
     },
     power_striker: {
-      signatures: ["Running Knee", "Lariat", "Spinebuster", "Big Boot"],
-      finishers: ["Cyclone Kick", "Powerbomb", "Running Knee Strike", "Sit-Out Slam"],
-      taunts: ["Aggressive flex taunt", "Come on taunt", "Wake-up attack taunt"]
+      signatures: [
+        "Running Knee",
+        "Lariat",
+        "Spinebuster",
+        "Big Boot"
+      ],
+      finishers: [
+        "Cyclone Kick",
+        "Powerbomb",
+        "Running Knee Strike",
+        "Sit-Out Slam"
+      ],
+      taunts: [
+        "Aggressive flex taunt",
+        "Come on taunt",
+        "Wake-up attack taunt"
+      ]
     },
     heavy_hitter: {
-      signatures: ["Big Boot", "Lariat", "Side Slam", "Corner Splash"],
-      finishers: ["Chokeslam", "Powerbomb", "Running Slam", "Lariat Finish"],
-      taunts: ["Heavy hitter taunt", "Cold stare taunt", "Wake-up attack taunt"]
+      signatures: [
+        "Big Boot",
+        "Lariat",
+        "Side Slam",
+        "Corner Splash"
+      ],
+      finishers: [
+        "Chokeslam",
+        "Powerbomb",
+        "Running Slam",
+        "Lariat Finish"
+      ],
+      taunts: [
+        "Heavy hitter taunt",
+        "Cold stare taunt",
+        "Wake-up attack taunt"
+      ]
     },
     big_hybrid: {
-      signatures: ["Spinebuster", "Short-Arm Lariat", "Back Suplex", "Big Boot"],
-      finishers: ["Powerbomb", "Uranage", "Running Slam", "Lariat Finish"],
-      taunts: ["Hybrid bruiser taunt", "Arms-out taunt", "Wake-up stalk taunt"]
+      signatures: [
+        "Spinebuster",
+        "Short-Arm Lariat",
+        "Back Suplex",
+        "Big Boot"
+      ],
+      finishers: [
+        "Powerbomb",
+        "Uranage",
+        "Running Slam",
+        "Lariat Finish"
+      ],
+      taunts: [
+        "Hybrid bruiser taunt",
+        "Arms-out taunt",
+        "Wake-up stalk taunt"
+      ]
     },
     athletic_power: {
-      signatures: ["Powerslam", "Running Shoulder Tackle", "Backbreaker", "Lariat"],
-      finishers: ["Spinning Slam", "Powerbomb", "Sit-Out Powerslam", "Running Slam"],
-      taunts: ["Athletic power taunt", "Chest tap taunt", "Wake-up challenge taunt"]
+      signatures: [
+        "Powerslam",
+        "Running Shoulder Tackle",
+        "Backbreaker",
+        "Lariat"
+      ],
+      finishers: [
+        "Spinning Slam",
+        "Powerbomb",
+        "Sit-Out Powerslam",
+        "Running Slam"
+      ],
+      taunts: [
+        "Athletic power taunt",
+        "Chest tap taunt",
+        "Wake-up challenge taunt"
+      ]
     },
     athletic: {
-      signatures: ["Dropkick", "Running Neckbreaker", "Snap Suplex", "Enzuigiri"],
-      finishers: ["Spinning Kick", "DDT", "Top Rope Splash", "Cutter"],
-      taunts: ["Athletic crowd taunt", "Confident nod taunt", "Wake-up point taunt"]
+      signatures: [
+        "Dropkick",
+        "Running Neckbreaker",
+        "Snap Suplex",
+        "Enzuigiri"
+      ],
+      finishers: [
+        "Spinning Kick",
+        "DDT",
+        "Top Rope Splash",
+        "Cutter"
+      ],
+      taunts: [
+        "Athletic crowd taunt",
+        "Confident nod taunt",
+        "Wake-up point taunt"
+      ]
     },
     technical_athlete: {
-      signatures: ["German Suplex", "Dragon Screw", "Running Uppercut", "Crossface Setup"],
-      finishers: ["Armbar", "Crossface", "Bridging Suplex", "Submission Transition"],
-      taunts: ["Technical calm taunt", "Measured challenge taunt", "Wake-up ready taunt"]
+      signatures: [
+        "German Suplex",
+        "Dragon Screw",
+        "Running Uppercut",
+        "Crossface Setup"
+      ],
+      finishers: [
+        "Armbar",
+        "Crossface",
+        "Bridging Suplex",
+        "Submission Transition"
+      ],
+      taunts: [
+        "Technical calm taunt",
+        "Measured challenge taunt",
+        "Wake-up ready taunt"
+      ]
     },
     hybrid: {
-      signatures: ["Neckbreaker", "Snap Suplex", "Running Forearm", "Backbreaker"],
-      finishers: ["Cutter", "Powerbomb", "DDT", "Rolling Elbow"],
-      taunts: ["Balanced fighter taunt", "Confident nod taunt", "Wake-up ready taunt"]
+      signatures: [
+        "Neckbreaker",
+        "Snap Suplex",
+        "Running Forearm",
+        "Backbreaker"
+      ],
+      finishers: [
+        "Cutter",
+        "Powerbomb",
+        "DDT",
+        "Rolling Elbow"
+      ],
+      taunts: [
+        "Balanced fighter taunt",
+        "Confident nod taunt",
+        "Wake-up ready taunt"
+      ]
     },
     cocky_hybrid: {
-      signatures: ["Jumping Knee", "DDT", "Superkick", "Snap Powerslam"],
-      finishers: ["Cutter", "Spinning Kick", "Sit-Out Driver", "Top Rope Splash"],
-      taunts: ["Cocky crowd taunt", "Talk trash taunt", "Wake-up swagger taunt"]
+      signatures: [
+        "Jumping Knee",
+        "DDT",
+        "Superkick",
+        "Snap Powerslam"
+      ],
+      finishers: [
+        "Cutter",
+        "Spinning Kick",
+        "Sit-Out Driver",
+        "Top Rope Splash"
+      ],
+      taunts: [
+        "Cocky crowd taunt",
+        "Talk trash taunt",
+        "Wake-up swagger taunt"
+      ]
     },
     cocky_striker: {
-      signatures: ["Superkick", "Running Knee", "Neckbreaker", "Forearm Smash"],
-      finishers: ["Cyclone Kick", "Cutter", "Rolling Elbow", "Running Knee Strike"],
-      taunts: ["Cocky grin taunt", "Come on taunt", "Wake-up challenge taunt"]
+      signatures: [
+        "Superkick",
+        "Running Knee",
+        "Neckbreaker",
+        "Forearm Smash"
+      ],
+      finishers: [
+        "Cyclone Kick",
+        "Cutter",
+        "Rolling Elbow",
+        "Running Knee Strike"
+      ],
+      taunts: [
+        "Cocky grin taunt",
+        "Come on taunt",
+        "Wake-up challenge taunt"
+      ]
     },
     showboat: {
-      signatures: ["Dropkick", "Facebuster", "Snapmare Kick", "Running Forearm"],
-      finishers: ["DDT", "Roll-Up Variant", "Neckbreaker", "Spinning Kick"],
-      taunts: ["Pageant wave taunt", "Showboat pose taunt", "Wake-up teasing taunt"]
+      signatures: [
+        "Dropkick",
+        "Facebuster",
+        "Snapmare Kick",
+        "Running Forearm"
+      ],
+      finishers: [
+        "DDT",
+        "Roll-Up Variant",
+        "Neckbreaker",
+        "Spinning Kick"
+      ],
+      taunts: [
+        "Pageant wave taunt",
+        "Showboat pose taunt",
+        "Wake-up teasing taunt"
+      ]
     },
     showboat_striker: {
-      signatures: ["Superkick", "Jumping Knee", "Facebuster", "Running Forearm"],
-      finishers: ["Cyclone Kick", "Cutter", "Top Rope Splash", "Spinning Kick"],
-      taunts: ["Crowd hype taunt", "Trash talk taunt", "Wake-up swagger taunt"]
+      signatures: [
+        "Superkick",
+        "Jumping Knee",
+        "Facebuster",
+        "Running Forearm"
+      ],
+      finishers: [
+        "Cyclone Kick",
+        "Cutter",
+        "Top Rope Splash",
+        "Spinning Kick"
+      ],
+      taunts: [
+        "Crowd hype taunt",
+        "Trash talk taunt",
+        "Wake-up swagger taunt"
+      ]
     },
     crafty: {
-      signatures: ["Chop Block", "DDT", "Neckbreaker", "Small Package Setup"],
-      finishers: ["Roll-Up Variant", "DDT", "Submission Transition", "Cutter"],
-      taunts: ["Sneaky shrug taunt", "Crafty point taunt", "Wake-up bait taunt"]
+      signatures: [
+        "Chop Block",
+        "DDT",
+        "Neckbreaker",
+        "Small Package Setup"
+      ],
+      finishers: [
+        "Roll-Up Variant",
+        "DDT",
+        "Submission Transition",
+        "Cutter"
+      ],
+      taunts: [
+        "Sneaky shrug taunt",
+        "Crafty point taunt",
+        "Wake-up bait taunt"
+      ]
     },
     scrappy: {
-      signatures: ["Running Forearm", "Dropkick", "Bulldog", "Snap Suplex"],
-      finishers: ["DDT", "Jumping Kick", "Neckbreaker", "Top Rope Splash"],
-      taunts: ["Scrappy hype taunt", "Fired-up taunt", "Wake-up clap taunt"]
+      signatures: [
+        "Running Forearm",
+        "Dropkick",
+        "Bulldog",
+        "Snap Suplex"
+      ],
+      finishers: [
+        "DDT",
+        "Jumping Kick",
+        "Neckbreaker",
+        "Top Rope Splash"
+      ],
+      taunts: [
+        "Scrappy hype taunt",
+        "Fired-up taunt",
+        "Wake-up clap taunt"
+      ]
     }
   };
 
@@ -695,119 +970,147 @@ function uniquePick(list, count, seed) {
 }
 
 function generateSignatures(profile, seed) {
-  const pool = styleMovePools(profile.style).signatures;
-  return uniquePick(pool, 2, seed + 101);
+  return uniquePick(styleMovePools(profile.style).signatures, 2, seed + 101);
 }
 
 function generateFinishers(profile, seed) {
-  const pool = styleMovePools(profile.style).finishers;
-  return uniquePick(pool, 2, seed + 202);
+  return uniquePick(styleMovePools(profile.style).finishers, 2, seed + 202);
 }
 
 function generateTaunts(profile, seed) {
-  const pool = styleMovePools(profile.style).taunts;
-  return uniquePick(pool, 3, seed + 303);
+  return uniquePick(styleMovePools(profile.style).taunts, 3, seed + 303);
 }
 
 function generateSkillPoints(core) {
-  const offense = Math.round(
-    (core.arm_power +
-      core.leg_power +
-      core.grapple_offense +
-      core.running_offense +
-      core.aerial_offense) / 5
-  );
-
-  const defense = Math.round(
-    (core.strike_reversal +
-      core.grapple_reversal +
-      core.aerial_reversal +
-      core.body_durability +
-      core.pin_escape) / 5
-  );
-
-  const recovery = Math.round(
-    (core.recovery +
-      core.body_durability +
-      core.arm_durability +
-      core.leg_durability) / 4
-  );
-
-  const stamina = Math.round(
-    (core.stamina + core.movement_speed + core.agility) / 3
-  );
-
-  const mobility = Math.round(
-    (core.agility + core.movement_speed + core.aerial_range) / 3
-  );
-
   return {
-    offense_points: offense,
-    defense_points: defense,
-    recovery_points: recovery,
-    stamina_points: stamina,
+    offense_points: Math.round(
+      (core.arm_power +
+        core.leg_power +
+        core.grapple_offense +
+        core.running_offense +
+        core.aerial_offense) / 5
+    ),
+    defense_points: Math.round(
+      (core.strike_reversal +
+        core.grapple_reversal +
+        core.aerial_reversal +
+        core.body_durability +
+        core.pin_escape) / 5
+    ),
+    recovery_points: Math.round(
+      (core.recovery +
+        core.body_durability +
+        core.arm_durability +
+        core.leg_durability) / 4
+    ),
+    stamina_points: Math.round(
+      (core.stamina + core.movement_speed + core.agility) / 3
+    ),
     special_points: core.special,
     finisher_points: core.finisher,
-    mobility_points: mobility
+    mobility_points: Math.round(
+      (core.agility + core.movement_speed + core.aerial_range) / 3
+    )
   };
 }
 
 function generateBuild(name) {
   const profile = wrestlerProfiles[name];
   const seed = seedFromName(name);
-
   const coreAttributes = generateCoreAttributes(profile, seed);
-  const aiAttributes = generateAIAttributes(profile, seed);
-  const signatures = generateSignatures(profile, seed);
-  const finishers = generateFinishers(profile, seed);
-  const taunts = generateTaunts(profile, seed);
-  const skillPoints = generateSkillPoints(coreAttributes);
 
   return {
     core_attributes: coreAttributes,
-    ai_attributes: aiAttributes,
-    signatures,
-    finishers,
-    taunts,
-    skill_points: skillPoints
+    ai_attributes: generateAIAttributes(profile, seed),
+    signatures: generateSignatures(profile, seed),
+    finishers: generateFinishers(profile, seed),
+    taunts: generateTaunts(profile, seed),
+    skill_points: generateSkillPoints(coreAttributes)
   };
 }
 
-generateBtn.addEventListener("click", () => {
+function syncSelectToInput() {
+  if (!wrestlerSelect || !wrestlerInput) return;
+  wrestlerSelect.value = wrestlerInput.value.trim().toLowerCase();
+}
+
+function showError(message) {
+  if (statusEl) {
+    statusEl.textContent = message;
+  }
+  if (resultsEl) {
+    resultsEl.classList.add("hidden");
+  }
+}
+
+function showBuild(name, build) {
+  if (statusEl) {
+    statusEl.textContent = `Generated prototype build for ${formatLabel(name)}.`;
+  }
+  if (resultWrestlerName) {
+    resultWrestlerName.textContent = formatLabel(name);
+  }
+  if (resultSubtitle) {
+    resultSubtitle.textContent = "Gameplay-focused prototype output";
+  }
+  if (resultsEl) {
+    resultsEl.classList.remove("hidden");
+  }
+
+  renderGrid(coreAttributesEl, build.core_attributes);
+  renderGrid(aiAttributesEl, build.ai_attributes);
+  renderGrid(skillPointsEl, build.skill_points);
+  renderList(signaturesEl, build.signatures);
+  renderList(finishersEl, build.finishers);
+  renderList(tauntsEl, build.taunts);
+}
+
+function handleGenerate() {
+  console.log("generate clicked");
+
+  if (!wrestlerInput) {
+    console.error("Missing #wrestlerInput element");
+    return;
+  }
+
   const name = wrestlerInput.value.trim().toLowerCase();
 
   if (!name) {
-    statusEl.textContent = "Enter a wrestler name.";
-    resultsEl.classList.add("hidden");
+    showError("Enter a wrestler name.");
     return;
   }
 
   if (!wrestlerProfiles[name]) {
-    statusEl.textContent = "Wrestler not found in the current prototype roster.";
-    resultsEl.classList.add("hidden");
+    showError("Wrestler not found in the current prototype roster.");
     return;
   }
 
   const build = generateBuild(name);
-  resultWrestlerName.textContent = formatLabel(name);
-resultSubtitle.textContent = "Gameplay-focused prototype output";
-if (wrestlerSelect) {
-  wrestlerSelect.value = name;
+  showBuild(name, build);
+
+  if (wrestlerSelect) {
+    wrestlerSelect.value = name;
+  }
 }
 
-  statusEl.textContent = `Generated prototype build for ${formatLabel(name)}.`;
-  resultsEl.classList.remove("hidden");
+if (wrestlerSelect && wrestlerInput) {
+  wrestlerSelect.addEventListener("change", () => {
+    wrestlerInput.value = wrestlerSelect.value;
+  });
+}
 
-  renderGrid("coreAttributes", build.core_attributes);
-  renderGrid("aiAttributes", build.ai_attributes);
-  renderGrid("skillPoints", build.skill_points);
-  renderList("signatures", build.signatures);
-  renderList("finishers", build.finishers);
-  renderList("taunts", build.taunts);
-});
+if (wrestlerInput) {
+  wrestlerInput.addEventListener("input", syncSelectToInput);
 
-wrestlerInput.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    generateBtn.click();
-  }
-});
+  wrestlerInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      handleGenerate();
+    }
+  });
+}
+
+if (generateBtn) {
+  generateBtn.addEventListener("click", handleGenerate);
+} else {
+  console.error("Missing #generateBtn element");
+}
