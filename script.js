@@ -30,7 +30,15 @@ const resultsEl = document.getElementById("results");
 
 const coreAttributesEl = document.getElementById("coreAttributes");
 const aiAttributesEl = document.getElementById("aiAttributes");
-const movesetEl = document.getElementById("moveset");
+const movesetStandingFrontEl = document.getElementById("movesetStandingFront");
+const movesetStandingRearEl = document.getElementById("movesetStandingRear");
+const movesetCarryEtcEl = document.getElementById("movesetCarryEtc");
+const movesetGroundEl = document.getElementById("movesetGround");
+const movesetCornerEl = document.getElementById("movesetCorner");
+const movesetRopeIrishEl = document.getElementById("movesetRopeIrish");
+const movesetApronEl = document.getElementById("movesetApron");
+const movesetDivingSpringEl = document.getElementById("movesetDivingSpring");
+const movesetSubmissionsEl = document.getElementById("movesetSubmissions");
 const signaturesEl = document.getElementById("signatures");
 const finishersEl = document.getElementById("finishers");
 const tauntsEl = document.getElementById("taunts");
@@ -488,7 +496,177 @@ function flattenTaunts(taunts) {
     "Wake Up: " + taunts.wake_up.join(", ")
   ];
 }
-
+function splitMoveset(moveset) {
+  return {
+    standingFront: {
+      standing_front_light_attack_towards: moveset.standing_front_light_attack_towards,
+      standing_front_light_attack_neutral: moveset.standing_front_light_attack_neutral,
+      standing_front_light_attack_away: moveset.standing_front_light_attack_away,
+      standing_front_combo_chain_towards: moveset.standing_front_combo_chain_towards,
+      standing_front_combo_chain_neutral: moveset.standing_front_combo_chain_neutral,
+      standing_front_combo_chain_away: moveset.standing_front_combo_chain_away,
+      standing_front_combo_enders_towards: moveset.standing_front_combo_enders_towards,
+      standing_front_combo_enders_neutral: moveset.standing_front_combo_enders_neutral,
+      standing_front_combo_enders_away: moveset.standing_front_combo_enders_away,
+      standing_front_heavy_attack_towards: moveset.standing_front_heavy_attack_towards,
+      standing_front_heavy_attack_neutral: moveset.standing_front_heavy_attack_neutral,
+      standing_front_heavy_attack_away: moveset.standing_front_heavy_attack_away,
+      standing_front_light_grapple_neutral: moveset.standing_front_light_grapple_neutral,
+      standing_front_light_grapple_up: moveset.standing_front_light_grapple_up,
+      standing_front_light_grapple_left: moveset.standing_front_light_grapple_left,
+      standing_front_light_grapple_right: moveset.standing_front_light_grapple_right,
+      standing_front_light_grapple_down: moveset.standing_front_light_grapple_down,
+      standing_front_heavy_grapple_neutral: moveset.standing_front_heavy_grapple_neutral,
+      standing_front_heavy_grapple_up: moveset.standing_front_heavy_grapple_up,
+      standing_front_heavy_grapple_left: moveset.standing_front_heavy_grapple_left,
+      standing_front_heavy_grapple_right: moveset.standing_front_heavy_grapple_right,
+      standing_front_heavy_grapple_down: moveset.standing_front_heavy_grapple_down,
+      standing_front_running_light: moveset.standing_front_running_light,
+      standing_front_running_heavy: moveset.standing_front_running_heavy,
+      standing_front_running_grapple: moveset.standing_front_running_grapple
+    },
+    standingRear: {
+      standing_rear_light_attack: moveset.standing_rear_light_attack,
+      standing_rear_heavy_attack: moveset.standing_rear_heavy_attack,
+      standing_rear_light_grapple_neutral: moveset.standing_rear_light_grapple_neutral,
+      standing_rear_light_grapple_up: moveset.standing_rear_light_grapple_up,
+      standing_rear_light_grapple_left: moveset.standing_rear_light_grapple_left,
+      standing_rear_light_grapple_right: moveset.standing_rear_light_grapple_right,
+      standing_rear_light_grapple_down: moveset.standing_rear_light_grapple_down,
+      standing_rear_heavy_grapple_neutral: moveset.standing_rear_heavy_grapple_neutral,
+      standing_rear_heavy_grapple_up: moveset.standing_rear_heavy_grapple_up,
+      standing_rear_heavy_grapple_left: moveset.standing_rear_heavy_grapple_left,
+      standing_rear_heavy_grapple_right: moveset.standing_rear_heavy_grapple_right,
+      standing_rear_heavy_grapple_down: moveset.standing_rear_heavy_grapple_down,
+      standing_rear_grapple: moveset.standing_rear_grapple
+    },
+    carryEtc: {
+      standing_power_bomb: moveset.standing_power_bomb,
+      standing_firemans_carry: moveset.standing_firemans_carry,
+      standing_shoulder_carry: moveset.standing_shoulder_carry,
+      standing_cradle_carry: moveset.standing_cradle_carry,
+      standing_foot_catch_light: moveset.standing_foot_catch_light,
+      standing_foot_catch_heavy: moveset.standing_foot_catch_heavy,
+      standing_foot_catch_submission: moveset.standing_foot_catch_submission,
+      standing_foot_catch_reversal: moveset.standing_foot_catch_reversal,
+      standing_front_leverage_pin: moveset.standing_front_leverage_pin,
+      standing_rear_leverage_pin: moveset.standing_rear_leverage_pin
+    },
+    ground: {
+      ground_supine_upper_heavy_attack: moveset.ground_supine_upper_heavy_attack,
+      ground_supine_upper_limb_target: moveset.ground_supine_upper_limb_target,
+      ground_supine_upper_heavy_grapple: moveset.ground_supine_upper_heavy_grapple,
+      ground_supine_side_heavy: moveset.ground_supine_side_heavy,
+      ground_supine_side_limb_target: moveset.ground_supine_side_limb_target,
+      ground_supine_side_heavy_grapple: moveset.ground_supine_side_heavy_grapple,
+      ground_supine_lower_heavy: moveset.ground_supine_lower_heavy,
+      ground_supine_lower_limb_target: moveset.ground_supine_lower_limb_target,
+      ground_supine_lower_heavy_grapple: moveset.ground_supine_lower_heavy_grapple,
+      ground_supine_running_attack: moveset.ground_supine_running_attack,
+      ground_prone_upper_heavy_attack: moveset.ground_prone_upper_heavy_attack,
+      ground_prone_upper_limb_target: moveset.ground_prone_upper_limb_target,
+      ground_prone_upper_heavy_grapple: moveset.ground_prone_upper_heavy_grapple,
+      ground_prone_side_heavy: moveset.ground_prone_side_heavy,
+      ground_prone_side_limb_target: moveset.ground_prone_side_limb_target,
+      ground_prone_side_heavy_grapple: moveset.ground_prone_side_heavy_grapple,
+      ground_prone_lower_heavy: moveset.ground_prone_lower_heavy,
+      ground_prone_lower_limb_target: moveset.ground_prone_lower_limb_target,
+      ground_prone_lower_heavy_grapple: moveset.ground_prone_lower_heavy_grapple,
+      ground_kneeling_front_light_attack: moveset.ground_kneeling_front_light_attack,
+      ground_kneeling_front_heavy_attack: moveset.ground_kneeling_front_heavy_attack,
+      ground_kneeling_front_light_grapple: moveset.ground_kneeling_front_light_grapple,
+      ground_kneeling_front_heavy_grapple: moveset.ground_kneeling_front_heavy_grapple,
+      ground_kneeling_front_running_attack: moveset.ground_kneeling_front_running_attack,
+      ground_kneeling_rear_light_grapple: moveset.ground_kneeling_rear_light_grapple,
+      ground_kneeling_rear_heavy_grapple: moveset.ground_kneeling_rear_heavy_grapple,
+      ground_seated_front_heavy_attack: moveset.ground_seated_front_heavy_attack,
+      ground_seated_front_grapple: moveset.ground_seated_front_grapple,
+      ground_seated_front_running_attack: moveset.ground_seated_front_running_attack,
+      ground_seated_rear_heavy_attack: moveset.ground_seated_rear_heavy_attack,
+      ground_seated_rear_grapple: moveset.ground_seated_rear_grapple,
+      ground_corner_vs_grounded_opponent: moveset.ground_corner_vs_grounded_opponent
+    },
+    corner: {
+      corner_leaning_front_light_attack: moveset.corner_leaning_front_light_attack,
+      corner_leaning_front_heavy_attack: moveset.corner_leaning_front_heavy_attack,
+      corner_leaning_front_heavy_grapple_towards: moveset.corner_leaning_front_heavy_grapple_towards,
+      corner_leaning_front_heavy_grapple_neutral: moveset.corner_leaning_front_heavy_grapple_neutral,
+      corner_leaning_front_heavy_grapple_away: moveset.corner_leaning_front_heavy_grapple_away,
+      corner_leaning_front_light_running_attack: moveset.corner_leaning_front_light_running_attack,
+      corner_leaning_front_heavy_running_attack: moveset.corner_leaning_front_heavy_running_attack,
+      corner_leaning_front_grab_running_attack: moveset.corner_leaning_front_grab_running_attack,
+      corner_leaning_rear_light_attack: moveset.corner_leaning_rear_light_attack,
+      corner_leaning_rear_heavy_attack: moveset.corner_leaning_rear_heavy_attack,
+      corner_leaning_rear_heavy_grapple_towards: moveset.corner_leaning_rear_heavy_grapple_towards,
+      corner_leaning_rear_heavy_grapple_neutral: moveset.corner_leaning_rear_heavy_grapple_neutral,
+      corner_leaning_rear_heavy_grapple_away: moveset.corner_leaning_rear_heavy_grapple_away,
+      corner_leaning_rear_running_attack: moveset.corner_leaning_rear_running_attack,
+      corner_top_rope_stunned_front_heavy_attack: moveset.corner_top_rope_stunned_front_heavy_attack,
+      corner_top_rope_stunned_front_grapple: moveset.corner_top_rope_stunned_front_grapple,
+      corner_top_rope_stunned_rear_heavy_attack: moveset.corner_top_rope_stunned_rear_heavy_attack,
+      corner_top_rope_stunned_rear_grapple: moveset.corner_top_rope_stunned_rear_grapple,
+      corner_seated_heavy_attack: moveset.corner_seated_heavy_attack,
+      corner_seated_grapple: moveset.corner_seated_grapple,
+      corner_seated_running_attack: moveset.corner_seated_running_attack,
+      corner_tree_of_woe_heavy_attack: moveset.corner_tree_of_woe_heavy_attack,
+      corner_tree_of_woe_running_attack: moveset.corner_tree_of_woe_running_attack
+    },
+    ropeIrish: {
+      rope_leaning_light_attack: moveset.rope_leaning_light_attack,
+      rope_leaning_heavy_attack: moveset.rope_leaning_heavy_attack,
+      rope_leaning_heavy_grapple_towards: moveset.rope_leaning_heavy_grapple_towards,
+      rope_leaning_heavy_grapple_neutral: moveset.rope_leaning_heavy_grapple_neutral,
+      rope_leaning_heavy_grapple_away: moveset.rope_leaning_heavy_grapple_away,
+      rope_leaning_running_attack: moveset.rope_leaning_running_attack,
+      rope_middle_rope_heavy_attack: moveset.rope_middle_rope_heavy_attack,
+      rope_middle_rope_running_attack: moveset.rope_middle_rope_running_attack,
+      irish_whip_rebound_attack_light_attack: moveset.irish_whip_rebound_attack_light_attack,
+      irish_whip_rebound_attack_heavy_attack: moveset.irish_whip_rebound_attack_heavy_attack,
+      irish_whip_rebound_attack_grapple: moveset.irish_whip_rebound_attack_grapple,
+      irish_whip_pullback_action_light_attack: moveset.irish_whip_pullback_action_light_attack,
+      irish_whip_pullback_action_heavy_attack: moveset.irish_whip_pullback_action_heavy_attack
+    },
+    apron: {
+      apron_from_ring_front_heavy_attack: moveset.apron_from_ring_front_heavy_attack,
+      apron_from_ring_front_heavy_grapple: moveset.apron_from_ring_front_heavy_grapple,
+      apron_from_ring_front_grapple: moveset.apron_from_ring_front_grapple,
+      apron_from_ring_rear_grapple: moveset.apron_from_ring_rear_grapple,
+      apron_from_apron_to_ring_heavy_attack: moveset.apron_from_apron_to_ring_heavy_attack,
+      apron_from_apron_to_ring_grapple: moveset.apron_from_apron_to_ring_grapple,
+      apron_from_apron_to_ringside_running_attack_to_standing_opponent: moveset.apron_from_apron_to_ringside_running_attack_to_standing_opponent,
+      apron_from_apron_to_ringside_running_attack_to_supine_opponent: moveset.apron_from_apron_to_ringside_running_attack_to_supine_opponent,
+      apron_to_apron_drag_to_apron: moveset.apron_to_apron_drag_to_apron
+    },
+    divingSpring: {
+      diving_top_rope_light_dive_attack: moveset.diving_top_rope_light_dive_attack,
+      diving_top_rope_heavy_dive_attack: moveset.diving_top_rope_heavy_dive_attack,
+      diving_top_rope_light_dive_to_supine_opponent: moveset.diving_top_rope_light_dive_to_supine_opponent,
+      diving_top_rope_heavy_dive_to_supine_opponent: moveset.diving_top_rope_heavy_dive_to_supine_opponent,
+      diving_middle_rope_light_dive: moveset.diving_middle_rope_light_dive,
+      diving_middle_rope_heavy_dive: moveset.diving_middle_rope_heavy_dive,
+      diving_middle_rope_light_dive_to_supine_opponent: moveset.diving_middle_rope_light_dive_to_supine_opponent,
+      diving_middle_rope_heavy_dive_to_supine_opponent: moveset.diving_middle_rope_heavy_dive_to_supine_opponent,
+      diving_ledge_dive_to_standing_opponent: moveset.diving_ledge_dive_to_standing_opponent,
+      diving_ledge_dive_to_supine_opponent: moveset.diving_ledge_dive_to_supine_opponent,
+      diving_equipment_box_dive_to_standing_opponent: moveset.diving_equipment_box_dive_to_standing_opponent,
+      diving_equipment_box_dive_to_supine_opponent: moveset.diving_equipment_box_dive_to_supine_opponent,
+      diving_barricade_dive_to_standing_opponent: moveset.diving_barricade_dive_to_standing_opponent,
+      diving_barricade_dive_to_supine_opponent: moveset.diving_barricade_dive_to_supine_opponent,
+      springboard_to_ring_standing_front_rope_springboard_attack: moveset.springboard_to_ring_standing_front_rope_springboard_attack,
+      springboard_to_ring_standing_front_running_springboard: moveset.springboard_to_ring_standing_front_running_springboard,
+      springboard_to_ring_standing_front_corner_springboard_standing_attack: moveset.springboard_to_ring_standing_front_corner_springboard_standing_attack,
+      springboard_to_ring_standing_front_corner_springboard_running_attack: moveset.springboard_to_ring_standing_front_corner_springboard_running_attack,
+      springboard_to_ring_standing_front_springboard_from_apron: moveset.springboard_to_ring_standing_front_springboard_from_apron
+    },
+    submissions: {
+      holds_submission_standing_submission: moveset.holds_submission_standing_submission,
+      holds_submission_foot_catch_submission: moveset.holds_submission_foot_catch_submission,
+      holds_submission_upper_body_ground_submission: moveset.holds_submission_upper_body_ground_submission,
+      holds_submission_side_ground_submission: moveset.holds_submission_side_ground_submission,
+      holds_submission_lower_body_ground_submission: moveset.holds_submission_lower_body_ground_submission
+    }
+  };
+}
 function handleGenerate() {
   const rawName = wrestlerInput.value.trim().toLowerCase();
 
@@ -518,7 +696,17 @@ function handleGenerate() {
 
   renderGrid(coreAttributesEl, core);
   renderGrid(aiAttributesEl, ai);
-  renderGrid(movesetEl, moveset);
+  const groupedMoveset = splitMoveset(moveset);
+
+renderGrid(movesetStandingFrontEl, groupedMoveset.standingFront);
+renderGrid(movesetStandingRearEl, groupedMoveset.standingRear);
+renderGrid(movesetCarryEtcEl, groupedMoveset.carryEtc);
+renderGrid(movesetGroundEl, groupedMoveset.ground);
+renderGrid(movesetCornerEl, groupedMoveset.corner);
+renderGrid(movesetRopeIrishEl, groupedMoveset.ropeIrish);
+renderGrid(movesetApronEl, groupedMoveset.apron);
+renderGrid(movesetDivingSpringEl, groupedMoveset.divingSpring);
+renderGrid(movesetSubmissionsEl, groupedMoveset.submissions);
   renderGrid(skillPointsEl, skillPoints);
   renderList(signaturesEl, flattenSignatures(presentation.signatures));
   renderList(finishersEl, flattenFinishers(presentation.finishers));
