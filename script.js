@@ -1,3 +1,6 @@
+const resultWrestlerName = document.getElementById("resultWrestlerName");
+const resultSubtitle = document.getElementById("resultSubtitle");
+const wrestlerSelect = document.getElementById("wrestlerSelect");
 const wrestlerProfiles = {
   "arianna grace": {
     style: "showboat",
@@ -786,6 +789,11 @@ generateBtn.addEventListener("click", () => {
   }
 
   const build = generateBuild(name);
+  resultWrestlerName.textContent = formatLabel(name);
+resultSubtitle.textContent = "Gameplay-focused prototype output";
+if (wrestlerSelect) {
+  wrestlerSelect.value = name;
+}
 
   statusEl.textContent = `Generated prototype build for ${formatLabel(name)}.`;
   resultsEl.classList.remove("hidden");
