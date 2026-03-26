@@ -1,3 +1,42 @@
+function buildCagematchURL(name) {
+  const formatted = name.trim().replace(/\s+/g, "+");
+  return `https://www.cagematch.net/?id=2&name=${formatted}`;
+}
+function buildCagematchURL(name) {
+  const formatted = name.trim().replace(/\s+/g, "+");
+  return `https://www.cagematch.net/?id=2&name=${formatted}`;
+}
+function extractTraits(text) {
+  const lower = text.toLowerCase();
+
+  const traits = {
+    aerial: 0,
+    power: 0,
+    speed: 0,
+    submission: 0,
+    crowd: 0,
+    aggression: 0,
+    grapple: 0
+  };
+
+  function count(words, field) {
+    words.forEach((word) => {
+      if (lower.includes(word)) {
+        traits[field] += 1;
+      }
+    });
+  }
+
+  count(["springboard", "moonsault", "450", "dive", "top rope", "shooting star"], "aerial");
+  count(["powerbomb", "slam", "spinebuster", "dominant", "strength", "powerhouse"], "power");
+  count(["fast", "quick", "explosive", "speed", "rapid"], "speed");
+  count(["submission", "armbar", "crossface", "hold", "tap out"], "submission");
+  count(["charismatic", "crowd", "taunt", "showboat", "swagger"], "crowd");
+  count(["aggressive", "ruthless", "vicious", "violent", "fierce"], "aggression");
+  count(["suplex", "grapple", "wrestling", "mat", "throw"], "grapple");
+
+  return traits;
+}
 console.log("script loaded");
 
 const wrestlerProfiles = {
@@ -666,9 +705,101 @@ function splitMoveset(moveset) {
       holds_submission_lower_body_ground_submission: moveset.holds_submission_lower_body_ground_submission
     }
   };
+}async function handleGenerate() {
+  const name = wrestlerInput.value.trim();
+
+  if (!name) {
+    statusEl.textContent = "Enter a wrestler name.";
+    if (resultsEl) resultsEl.classList.add("hidden");
+    return;
+  }
+
+  statusEl.textContent = "Scraping...";
+
+  // Build URL
+  const url = buildCagematchURL(name);
+
+  // Fetch page text
+  const text = await fetchPageText(url);
+
+  if (!text || text.length < 100) {
+    statusEl.textContent = "Failed to fetch usable data.";
+    if (resultsEl) resultsEl.classList.add("hidden");
+    return;
+  }
+
+  // Extract traits from scraped text
+  const traits = extractTraits(text);
+
+  // Update UI
+  statusEl.textContent = "Generated from scraped data";
+
+  if (resultWrestlerName) {
+    resultWrestlerName.textContent = name;
+  }
+
+  if (resultSubtitle) {
+    resultSubtitle.textContent = "Source-based prototype output";
+  }
+
+  if (resultsEl) {
+    resultsEl.classList.remove("hidden");
+  }
+
+  // Show traits as core attributes (temporary)
+  if (coreAttributesEl) {
+    renderGrid(coreAttributesEl, {
+      aerial: traits.aerial,
+      power: traits.power,
+      speed: traits.speed,
+      submission: traits.submission,
+      crowd: traits.crowd,
+      aggression: traits.aggression,
+      grapple: traits.grapple
+    });
+  }
+
+  // Show traits again as AI (just for now so you can see output)
+  if (aiAttributesEl) {
+    renderGrid(aiAttributesEl, {
+      aerial_keywords: traits.aerial,
+      power_keywords: traits.power,
+      speed_keywords: traits.speed,
+      submission_keywords: traits.submission,
+      crowd_keywords: traits.crowd,
+      aggression_keywords: traits.aggression,
+      grapple_keywords: traits.grapple
+    });
+  }
+
+  // Placeholder sections (will upgrade later)
+  if (signaturesEl) {
+    renderList(signaturesEl, ["Scraped data detected."]);
+  }
+
+  if (finishersEl) {
+    renderList(finishersEl, ["Scraped data detected."]);
+  }
+
+  if (tauntsEl) {
+    renderList(tauntsEl, ["Scraped data detected."]);
+  }
+
+  if (skillPointsEl) {
+    renderGrid(skillPointsEl, {
+      text_length: text.length,
+      aerial_hits: traits.aerial,
+      power_hits: traits.power,
+      speed_hits: traits.speed,
+      submission_hits: traits.submission
+    });
+  }
+
+  // Debug logs (VERY IMPORTANT for testing)
+  console.log("SCRAPED URL:", url);
+  console.log("TEXT SAMPLE:", text.substring(0, 500));
+  console.log("TRAITS:", traits);
 }
-function handleGenerate() {
-  const rawName = wrestlerInput.value.trim().toLowerCase();
 
   if (!rawName) {
     statusEl.textContent = "Enter a wrestler name.";
