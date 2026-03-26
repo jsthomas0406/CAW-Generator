@@ -1,95 +1,218 @@
-# WWE CAW Generator
+* {
+  box-sizing: border-box;
+}
 
-A free web-based tool that generates WWE 2K-style CAW (Create-A-Wrestler) builds based on real wrestlers.
+:root {
+  --bg: #0b0d12;
+  --panel: #151922;
+  --panel-2: #1b2130;
+  --border: #2a3246;
+  --text: #f5f7fb;
+  --muted: #a9b3c7;
+  --accent: #2f6fed;
+  --accent-hover: #2558bf;
+  --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+}
 
-This project is focused on accuracy. The goal is to create builds that reflect how wrestlers actually perform, not just generic archetypes.
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background:
+    radial-gradient(circle at top, #141a26 0%, #0b0d12 35%, #090b10 100%);
+  color: var(--text);
+  min-height: 100vh;
+}
 
----
+.app {
+  max-width: 1150px;
+  margin: 0 auto;
+  padding: 28px 18px 48px;
+}
 
-## Features
+.header {
+  text-align: center;
+  margin-bottom: 28px;
+}
 
-- Search for a WWE or NXT wrestler
-- Generate a full CAW gameplay build
-- Includes:
-  - Core Attributes
-  - AI Attributes
-  - Signatures
-  - Finishers
-  - Taunts
-  - Skill Points
-- Clean dark UI inspired by wrestling game menus
-- Fully free and runs in the browser
+.header h1 {
+  margin: 0 0 8px;
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: 0.03em;
+}
 
----
+.header p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1rem;
+}
 
-## Current Status
+.search-card,
+.card {
+  background: linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
+}
 
-This is a **prototype version**.
+.search-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 18px;
+  margin-bottom: 16px;
+}
 
-- Uses **mock data**
-- Supports a small set of wrestlers:
-  - Trick Williams
-  - Oba Femi
-- No API or live web scraping yet
+.card {
+  padding: 18px;
+  margin-bottom: 18px;
+}
 
----
+.card h2 {
+  margin: 0 0 14px;
+  font-size: 1.15rem;
+  color: var(--text);
+}
 
-## How It Works
+.result-title-card h2 {
+  margin-bottom: 6px;
+}
 
-1. User enters a wrestler name
-2. The app looks for that wrestler in the local dataset
-3. Displays a full CAW build
+.result-title-card p {
+  margin: 0;
+  color: var(--muted);
+}
 
----
+select,
+input {
+  flex: 1 1 240px;
+  min-width: 220px;
+  padding: 13px 14px;
+  border-radius: 12px;
+  border: 1px solid #39445d;
+  background: #0f141d;
+  color: var(--text);
+  outline: none;
+  font-size: 0.98rem;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
 
-## Future Plans
+select:focus,
+input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(47, 111, 237, 0.18);
+  background: #111826;
+}
 
-- Add more wrestlers (especially NXT talent not in WWE 2K)
-- Expand moveset coverage
-- Add full move slot system
-- Add JSON export
-- Add copy buttons for easy in-game input
-- Connect live web data
-- Add AI generation step (optional)
+select {
+  cursor: pointer;
+}
 
----
+button {
+  padding: 13px 20px;
+  border: none;
+  border-radius: 12px;
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.98rem;
+  transition: background 0.18s ease, transform 0.12s ease;
+}
 
-## Tech Stack
+button:hover {
+  background: var(--accent-hover);
+}
 
-- HTML
-- CSS
-- JavaScript
-- GitHub Pages (free hosting)
+button:active {
+  transform: translateY(1px);
+}
 
----
+.search-divider {
+  color: var(--muted);
+  font-size: 0.95rem;
+  padding: 0 2px;
+}
 
-## How to Run Locally
+.status {
+  min-height: 24px;
+  margin: 8px 2px 18px;
+  color: var(--muted);
+  font-size: 0.97rem;
+}
 
-1. Download or clone the repo
-2. Open `index.html` in your browser
+.results.hidden {
+  display: none;
+}
 
----
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 10px;
+}
 
-## Deployment
+.stat {
+  background: #0f141d;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 11px 12px;
+  min-height: 68px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
-This site is hosted for free using GitHub Pages.
+.stat strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #d7def0;
+  font-size: 0.95rem;
+}
 
----
+ul {
+  margin: 0;
+  padding-left: 20px;
+}
 
-## Goal
+li {
+  margin-bottom: 9px;
+  color: #e7ebf5;
+}
 
-To create the most accurate and complete CAW generator possible, especially for WWE and NXT wrestlers not included in the official WWE 2K games.
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 
----
+@media (max-width: 700px) {
+  .app {
+    padding: 18px 12px 36px;
+  }
 
-## Notes
+  .search-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-- No login required
-- No paid services used
-- Fully free to use and build
+  .search-divider {
+    text-align: center;
+    width: 100%;
+  }
 
----
+  button,
+  select,
+  input {
+    width: 100%;
+  }
 
-## Author
-
-Jack Thomas
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
