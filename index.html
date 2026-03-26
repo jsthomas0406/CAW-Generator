@@ -10,22 +10,79 @@
   <div class="app">
     <header class="header">
       <h1>WWE CAW Generator</h1>
-      <p>Free prototype</p>
+      <p>Free prototype for WWE and NXT CAW gameplay builds</p>
     </header>
 
     <main>
       <section class="search-card">
+        <label for="wrestlerSelect" class="sr-only">Choose a wrestler</label>
+        <select id="wrestlerSelect">
+          <option value="">Select a wrestler</option>
+          <option value="arianna grace">Arianna Grace</option>
+          <option value="brad baylor">Brad Baylor</option>
+          <option value="bronco nima">Bronco Nima</option>
+          <option value="cutler james">Cutler James</option>
+          <option value="dion lennox">Dion Lennox</option>
+          <option value="eli knight">Eli Knight</option>
+          <option value="elio lefleur">Elio LeFleur</option>
+          <option value="jackson drake">Jackson Drake</option>
+          <option value="jasper troy">Jasper Troy</option>
+          <option value="kale dixon">Kale Dixon</option>
+          <option value="keanu carver">Keanu Carver</option>
+          <option value="kendal grey">Kendal Grey</option>
+          <option value="lainey reid">Lainey Reid</option>
+          <option value="lucien price">Lucien Price</option>
+          <option value="niko vance">Niko Vance</option>
+          <option value="osiris griffin">Osiris Griffin</option>
+          <option value="ricky smokes">Ricky Smokes</option>
+          <option value="saquon shugars">Saquon Shugars</option>
+          <option value="shiloh hill">Shiloh Hill</option>
+        </select>
+
+        <span class="search-divider">or</span>
+
+        <label for="wrestlerInput" class="sr-only">Enter a wrestler name</label>
         <input
           id="wrestlerInput"
           type="text"
           placeholder="Enter a WWE wrestler name"
+          list="wrestlerSuggestions"
+          autocomplete="off"
         />
+
+        <datalist id="wrestlerSuggestions">
+          <option value="Arianna Grace"></option>
+          <option value="Brad Baylor"></option>
+          <option value="Bronco Nima"></option>
+          <option value="Cutler James"></option>
+          <option value="Dion Lennox"></option>
+          <option value="Eli Knight"></option>
+          <option value="Elio LeFleur"></option>
+          <option value="Jackson Drake"></option>
+          <option value="Jasper Troy"></option>
+          <option value="Kale Dixon"></option>
+          <option value="Keanu Carver"></option>
+          <option value="Kendal Grey"></option>
+          <option value="Lainey Reid"></option>
+          <option value="Lucien Price"></option>
+          <option value="Niko Vance"></option>
+          <option value="Osiris Griffin"></option>
+          <option value="Ricky Smokes"></option>
+          <option value="Saquon Shugars"></option>
+          <option value="Shiloh Hill"></option>
+        </datalist>
+
         <button id="generateBtn">Generate</button>
       </section>
 
       <section id="status" class="status"></section>
 
       <section id="results" class="results hidden">
+        <div class="card result-title-card">
+          <h2 id="resultWrestlerName">Generated Build</h2>
+          <p id="resultSubtitle">Gameplay-focused prototype output</p>
+        </div>
+
         <div class="card">
           <h2>Core Attributes</h2>
           <div id="coreAttributes" class="grid"></div>
@@ -59,6 +116,14 @@
     </main>
   </div>
 
+  <script>
+    const wrestlerSelect = document.getElementById("wrestlerSelect");
+    const wrestlerInput = document.getElementById("wrestlerInput");
+
+    wrestlerSelect.addEventListener("change", () => {
+      wrestlerInput.value = wrestlerSelect.value;
+    });
+  </script>
   <script src="script.js"></script>
 </body>
 </html>
